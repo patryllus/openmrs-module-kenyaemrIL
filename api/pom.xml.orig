@@ -5,7 +5,11 @@
 	<parent>
 		<groupId>org.openmrs.module</groupId>
 		<artifactId>kenyaemrIL</artifactId>
+<<<<<<< HEAD
+		<version>1.2.1</version>
+=======
 		<version>1.1.2</version>
+>>>>>>> Bumping to 1.1.2
 	</parent>
 
 	<artifactId>kenyaemrIL-api</artifactId>
@@ -14,6 +18,11 @@
 	<description>API project for KenyaEMRIL</description>
 
 	<dependencies>
+
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>legacyui-api</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>org.openmrs.module</groupId>

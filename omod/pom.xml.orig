@@ -5,7 +5,11 @@
 	<parent>
 		<groupId>org.openmrs.module</groupId>
 		<artifactId>kenyaemrIL</artifactId>
+<<<<<<< HEAD
+		<version>1.2.1</version>
+=======
 		<version>1.1.2</version>
+>>>>>>> Bumping to 1.1.2
 	</parent>
 
 	<artifactId>kenyaemrIL-omod</artifactId>
@@ -25,6 +29,11 @@
 
 		<!-- Begin OpenMRS modules -->
 		<!-- Depends on uiframework module -->
+
+		<dependency>
+			<groupId>org.openmrs.module</groupId>
+			<artifactId>legacyui-omod</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>${project.parent.groupId}</groupId>
 			<artifactId>${project.parent.artifactId}-api</artifactId>
@@ -33,7 +42,7 @@
 
 		<dependency>
 			<groupId>org.openmrs.module</groupId>
-			<artifactId>webservices.rest-omod-1.8</artifactId>
+			<artifactId>webservices.rest-omod</artifactId>
 		</dependency>
 
 		<dependency>

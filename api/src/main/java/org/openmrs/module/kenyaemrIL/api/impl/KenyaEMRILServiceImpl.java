@@ -90,7 +90,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static org.openmrs.module.kenyaemrIL.api.ILPatientRegistration.conceptService;
@@ -368,17 +367,19 @@ public class KenyaEMRILServiceImpl extends BaseOpenmrsService implements KenyaEM
         KenyaEMRILMessage kenyaEMRILMessage = getKenyaEMRILMessageByUuid(messsageUUID);
         try {
             Patient ilPerson = wrapIlPerson(ilMessage, kenyaEMRILMessage);
-            PatientIdentifier uniquePatientNumber = ilPerson.getPatientIdentifier("Unique Patient Number");
+            PatientIdentifier uniquePatientNumber = ilPerson.getPatientIdentifier("Patient Clinic Number");
             Pattern p = Pattern.compile("^[0-9]{10,11}$");
-            String cccNumber = uniquePatientNumber.getIdentifier();
-            if (cccNumber == null) {
-                kenyaEMRILMessage.setStatus("Missing CCC Number");
+            String clinicNumber = uniquePatientNumber.getIdentifier();
+            if (clinicNumber == null) {
+                kenyaEMRILMessage.setStatus("Patient Clinic Number");
                 successful = false;
             } else {
+                /*    swop related comments : We so far do not validate Patient clinic number
                 Matcher m = p.matcher(cccNumber);
                 if (m.find()) {
+               */
                     // Check to see a patient with similar upn number exists
-                    List<Patient> patients = Context.getPatientService().getPatients(null, cccNumber, allPatientIdentifierTypes, true);
+                    List<Patient> patients = Context.getPatientService().getPatients(null, clinicNumber, allPatientIdentifierTypes, true);
                     if (patients.size() < 1) {
                         //Register patient
                         Patient patient = patientService.savePatient(ilPerson);
@@ -388,15 +389,17 @@ public class KenyaEMRILServiceImpl extends BaseOpenmrsService implements KenyaEM
                             successful = true;
                         }
                     } else {
-                        log.error("Cannot register: Patient with similar UPN exists:");
-                        kenyaEMRILMessage.setStatus("Duplicate CCC Number");
+                        log.error("Cannot register: Patient with similar Patient Clinic Number exists:");
+                        kenyaEMRILMessage.setStatus("Duplicate Patient Clinic Number");
                         successful = false;
                     }
+                    /*    swop related comments
                 } else {
-                    log.error("Cannot register: CCC number format does not match:");
+                    log.error("Cannot register: Patient Clinic Number format does not match:");
                     kenyaEMRILMessage.setStatus("CCC Number in wrong format");
-                    successful = false;
+                   successful = false;
                 }
+                */
             }
 
         } catch (Exception e) {

@@ -104,11 +104,28 @@ public class ILPatientRegistration {
                 ipd.setId(patientIdentifier.getIdentifier());
                 ipd.setIdentifier_type("CCC_NUMBER");
                 internalPatientIds.add(ipd);
-            } else if (patientIdentifier.getIdentifierType().getName().equalsIgnoreCase("Patient Clinic Number")) {
+            }
+            /*    Original IL Identifier types
+              else if (patientIdentifier.getIdentifierType().getName().equalsIgnoreCase("Patient Clinic Number")) {
                 ipd.setAssigning_authority("CCC");
                 ipd.setId(patientIdentifier.getIdentifier());
                 ipd.setIdentifier_type("PATIENT_CLINIC_NUMBER");
                 internalPatientIds.add(ipd);
+               */
+               // SWOP customizations use CLINIC_ID
+              else if (patientIdentifier.getIdentifierType().getName().equalsIgnoreCase("Patient Clinic Number")) {
+                ipd.setAssigning_authority("IDALL");
+                ipd.setId(patientIdentifier.getIdentifier());
+                ipd.setIdentifier_type("CLINIC_ID");
+                internalPatientIds.add(ipd);
+
+            }
+            else if (patientIdentifier.getIdentifierType().getName().equalsIgnoreCase("SWOP Enrollment Number")) {
+                ipd.setAssigning_authority("IDALL");
+                ipd.setId(patientIdentifier.getIdentifier());
+                ipd.setIdentifier_type("ENROLL_NO");
+                internalPatientIds.add(ipd);
+
             }
         }
 

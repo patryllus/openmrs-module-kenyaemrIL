@@ -371,7 +371,7 @@ public class KenyaEMRILServiceImpl extends BaseOpenmrsService implements KenyaEM
             Pattern p = Pattern.compile("^[0-9]{10,11}$");
             String clinicNumber = uniquePatientNumber.getIdentifier();
             if (clinicNumber == null) {
-                kenyaEMRILMessage.setStatus("Patient Clinic Number");
+                kenyaEMRILMessage.setStatus("Missing Clinic ID Number");
                 successful = false;
             } else {
                 /*    swop related comments : We so far do not validate Patient clinic number
@@ -403,8 +403,8 @@ public class KenyaEMRILServiceImpl extends BaseOpenmrsService implements KenyaEM
             }
 
         } catch (Exception e) {
-            log.error("Cannot register reason :" + e.getMessage());
-            kenyaEMRILMessage.setStatus("Unknown Error");
+
+            kenyaEMRILMessage.setStatus("Unknown Error");log.error("Cannot register reason :" + e.getMessage());
             successful = false;
         }
         return successful;
@@ -1171,11 +1171,11 @@ public class KenyaEMRILServiceImpl extends BaseOpenmrsService implements KenyaEM
                 if (idType != null) {
                     patientIdentifier.setIdentifierType(idType);
 
-                    if (internalPatientId.getIdentifier_type().equalsIgnoreCase("CCC_NUMBER")) {
+                    if (internalPatientId.getIdentifier_type().equalsIgnoreCase("CLINIC_ID")) {
                         patientIdentifier.setPreferred(true);
-                        String ccc = internalPatientId.getId();
-                        ccc = deleteCharacter(ccc, "-");
-                        patientIdentifier.setIdentifier(ccc);
+                        String clinicID = internalPatientId.getId();
+                        //clinicID = deleteCharacter(clinicID, "-");
+                        patientIdentifier.setIdentifier(clinicID);
                         patientIdentifiers.add(patientIdentifier);
                         continue;
                     }
@@ -1279,6 +1279,10 @@ public class KenyaEMRILServiceImpl extends BaseOpenmrsService implements KenyaEM
         if (identifierType != null) {
 
             switch (identifierType.toUpperCase()) {
+                case "CLINIC_ID": {
+                    patientIdentifierType = identifiersMap.get("Patient Clinic Number");
+                    break;
+                }
                 case "CCC_NUMBER": {
                     patientIdentifierType = identifiersMap.get("Unique Patient Number");
                     break;

@@ -1174,7 +1174,7 @@ public class KenyaEMRILServiceImpl extends BaseOpenmrsService implements KenyaEM
                     if (internalPatientId.getIdentifier_type().equalsIgnoreCase("CLINIC_ID")) {
                         patientIdentifier.setPreferred(true);
                         String clinicID = internalPatientId.getId();
-                        //clinicID = deleteCharacter(clinicID, "-");
+                        clinicID = clinicID.toUpperCase();
                         patientIdentifier.setIdentifier(clinicID);
                         patientIdentifiers.add(patientIdentifier);
                         continue;
@@ -1281,6 +1281,10 @@ public class KenyaEMRILServiceImpl extends BaseOpenmrsService implements KenyaEM
             switch (identifierType.toUpperCase()) {
                 case "CLINIC_ID": {
                     patientIdentifierType = identifiersMap.get("Patient Clinic Number");
+                    break;
+                }
+                case "ENROLL_NO": {
+                    patientIdentifierType = identifiersMap.get("SWOP Enrollment Number");
                     break;
                 }
                 case "CCC_NUMBER": {
